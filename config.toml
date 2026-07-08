@@ -1,0 +1,15 @@
+[theme]
+# Forzar el modo oscuro en toda la app
+base="dark"
+
+# Color principal (usaremos tu verde neón para los botones y barras)
+primaryColor="#00FF7F"
+
+# Color del fondo principal
+backgroundColor="#0E1117"
+
+# Color del panel lateral (Sidebar) y tarjetas
+secondaryBackgroundColor="#1E1E1E"
+
+# Color general de los textos
+textColor="#FFFFFF"
