@@ -1,6 +1,7 @@
 # ⚡ Nexus Talent Engine: Módulo Formativo
 
-![Banner Nexus Talent Engine](https://www.canva.com/design/DAHO74A6mDY/1-IG5qikp5VAkd7Nt3ztag/edit)
+![Banner Nexus Talent Engine](<img width="2000" height="600" alt="Banner_github" src="https://github.com/user-attachments/assets/dcf94ec5-e478-42a1-95ba-42837ed5247e" />
+)
 
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://tu-enlace-de-streamlit.app)
 ![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)
