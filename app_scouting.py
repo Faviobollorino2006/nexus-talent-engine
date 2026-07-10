@@ -6,6 +6,44 @@ import plotly.graph_objects as go
 
 # 1. Configuración general
 st.set_page_config(page_title="Nexus Talent Engine", layout="wide", initial_sidebar_state="expanded")
+st.markdown("""
+    <style>
+    /* Diseño de las tarjetas de Métricas (KPIs) */
+    div[data-testid="metric-container"] {
+        background-color: rgba(30, 30, 30, 0.85); /* Fondo oscuro semitransparente */
+        border-left: 5px solid #00FF7F; /* Borde verde neón vibrante a la izquierda */
+        border-right: 1px solid #333333;
+        border-top: 1px solid #333333;
+        border-bottom: 1px solid #333333;
+        border-radius: 8px; /* Esquinas redondeadas */
+        padding: 15px 20px;
+        box-shadow: 0px 4px 15px rgba(0, 255, 127, 0.08); /* Brillo verde sutil */
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+
+    /* Efecto Hover: Dinamismo al pasar el cursor */
+    div[data-testid="metric-container"]:hover {
+        transform: translateY(-3px);
+        box-shadow: 0px 6px 20px rgba(0, 255, 127, 0.2);
+    }
+
+    /* Estilo del título de la métrica */
+    div[data-testid="stMetricLabel"] {
+        color: #A0A0A0 !important; /* Gris claro corporativo */
+        font-weight: 600;
+        font-size: 1.05rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    /* Estilo del número (El dato principal) */
+    div[data-testid="stMetricValue"] {
+        color: #FFFFFF !important; /* Blanco puro para impacto visual */
+        font-size: 2.2rem;
+        font-weight: bold;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
 # ==========================================
 # 🔒 SISTEMA DE SEGURIDAD
@@ -105,10 +143,60 @@ with tab_dashboard:
             fig_radar.update_layout(polar=dict(radialaxis=dict(visible=True, range=[0, 100])), showlegend=False, plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)')
             st.plotly_chart(fig_radar, use_container_width=True)
 
-    st.markdown("---")
-    st.subheader("📊 Base de Datos Activa")
-    st.dataframe(df_filtrado, use_container_width=True)
-
+    st.dataframe(
+        df_filtrado,
+        use_container_width=True,
+        hide_index=True,
+        height=400, # Fija un tamaño para que sea scrolleable y limpia
+        column_config={
+            # 1. Identificación
+            "Nombre": st.column_config.TextColumn("Talento 👤", width="medium"),
+            "Club_Actual": st.column_config.TextColumn("Club 🛡️", width="small"),
+            "Categoria": st.column_config.TextColumn("Cat.", width="small"),
+            "Posicion": st.column_config.TextColumn("Pos.", width="small"),
+            
+            # 2. Las Métricas Físicas Visuales (Barras de progreso)
+            "Veloc_Max_kmh": st.column_config.ProgressColumn(
+                "Velocidad (km/h) ⚡",
+                help="Velocidad punta registrada",
+                min_value=20.0,
+                max_value=38.0,
+                format="%.1f",
+            ),
+            "Coeficiente_RAE": st.column_config.NumberColumn(
+                "Coef. RAE 🧬",
+                help="Si es menor a 1 = Desarrollo tardío. Mayor a 1 = Desarrollo temprano.",
+                format="%.2f",
+            ),
+            
+            # 3. Métricas Técnicas
+            "xG": st.column_config.NumberColumn("xG ⚽", format="%.2f"),
+            "xA": st.column_config.NumberColumn("xA 👟", format="%.2f"),
+            
+            # 4. El Veredicto (Estrellas y Moneda)
+            "Puntaje_Consolidacion": st.column_config.NumberColumn(
+                "Score Predictivo 🌟",
+                help="Puntaje sobre 100 ajustado por edad biológica (RAE)",
+                format="%d / 100",
+            ),
+            "Valor_Mercado_Proyectado_USD": st.column_config.NumberColumn(
+                "Valor Proyectado 💰",
+                help="Valor estimado a los 21 años",
+                format="$%d",
+            ),
+            "Decision_Directiva": st.column_config.TextColumn(
+                "Veredicto del Motor 🎯",
+                width="medium"
+            ),
+            
+            # 5. Ocultar columnas crudas que ensucian la vista del directivo
+            "Edad_Cronologica": None,
+            "Edad_Biologica": None,
+            "Minutos_Jugados": None,
+            "Pases_Progresivos": None,
+            "Puntaje_Resiliencia": None
+        }
+    )
 # ==========================================
 # PESTAÑA 2: EVALUACIÓN EN VIVO (Con Accesibilidad)
 # ==========================================
